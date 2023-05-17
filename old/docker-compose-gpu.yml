@@ -1,0 +1,31 @@
+# docker compose.yml
+version: "3.9"
+
+services:    
+  webgui-gpu:
+    image: hskim:webgui-gpu
+    runtime: "runc"
+    user: ${CURRENT_UID}
+    volumes:
+      - /srv/project_code/hskim/:/Projects 
+      - /srv/vital_amc/TEST-01-Emulator/210805:/srv/vital_amc/TEST-01-Emulator/210805 
+      - /srv/vital_amc/TEST-01-Emulator/210902:/srv/vital_amc/TEST-01-Emulator/210902
+      - /srv/vital_amc:/srv/vital_amc 
+      - /srv/project_code:/srv/project_code
+      - /home/projects/pcg_transform/Research/old/pcg_AI/ml/Data/Preprocessed/VG/:/home/projects/pcg_transform/Research/old/pcg_AI/ml/Data/Preprocessed/VG/  
+    ports:
+      - "8891:8891"
+      - "8787:8787"
+      - "8786:8786"
+      - "8050:8050"
+    tty: true
+    environment:
+      - JUPYTER_TOKEN=signalserver
+    entrypoint: ["/bin/bash","-c"]
+    command:
+      - |
+        source activate rapids
+        cd /Projects/signal_gui/docker
+        sh start_jupyter.sh
+        /bin/bash
+

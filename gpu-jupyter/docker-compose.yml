@@ -1,0 +1,38 @@
+# docker compose.yml
+version: "3.9"
+
+services:
+  gpu-jupyter:
+    container_name: gpu-jupyter
+    image: signalhouse/dev-ml:11.4-base-ubuntu20.04
+    runtime: "runc"
+    volumes:
+      - /home/hskim/Projects/:/Projects
+      - /srv/vital_amc:/srv/vital_amc
+      - /srv/project_data:/srv/project_data
+      - /srv/project_code:/srv/project_code
+    ports:
+      - "8891:8891"
+      - "5006:5006"
+    tty: true
+    environment:
+      - GRANT_SUDO: "yes"
+      - JUPYTER_ENABLE_LAB: "yes"
+      - NB_UID: ${JUPYTER_UID:-1000}
+      - NB_GID: ${JUPYTER_GID:-1000}
+      - NVIDIA_VISIBLE_DEVICES=0 # which gpu do you want to use for this container
+      - JUPYTER_TOKEN=signalserver
+    user: "root"
+    restart: always
+    entrypoint: [ "/bin/bash", "-c" ]
+    command:
+      - |
+        source activate dev-ml
+        /bin/bash
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: [ '0' ]
+              capabilities: [ gpu ]

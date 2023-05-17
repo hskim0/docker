@@ -1,0 +1,8 @@
+streamlit==0.86.0
+plotly==5.1.0
+bokeh==2.3.3
+dash==1.21.0
+datashader
+holoviews
+panel
+neurokit2

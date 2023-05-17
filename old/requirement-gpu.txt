@@ -1,0 +1,6 @@
+neurokit2
+jupyterlab
+plotly
+dash
+jupyter-dash
+holoviews

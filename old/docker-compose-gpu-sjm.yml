@@ -1,0 +1,31 @@
+# docker compose.yml
+version: "3.9"
+
+services:    
+  webgui-gpu:
+    image: signalhouse/dev-ml:11.4-base-ubuntu20.04
+    runtime: "runc"
+    user: ${CURRENT_UID}
+    volumes:
+      - /srv/vital_amc:/srv/vital_amc
+      - /srv/project_data:/srv/project_data
+      - /srv/project_code:/srv/project_code
+      - /srv:/srv
+    ports:
+      - "8892:8892"
+    tty: true
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=0, 1 # which gpu do you want to use for this container
+      - JUPYTER_TOKEN=signalserver
+    entrypoint: ["/bin/bash","-c"]
+    command:
+      - |
+        source activate dev-ml
+        /bin/bash
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0','1']
+              capabilities: [gpu]

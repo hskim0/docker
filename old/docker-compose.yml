@@ -1,0 +1,50 @@
+# docker compose.yml
+version: "3.9"
+
+services:
+  jupyter:
+    image: hskim:webgui
+    volumes:
+      - /home/hskim/Projects/:/Projects 
+      - /srv/data/vital_amc/TEST-01-Emulator/210805:/srv/data/vital_amc/TEST-01-Emulator/210805 
+      - /srv/data/vital_amc/TEST-01-Emulator/210902:/srv/data/vital_amc/TEST-01-Emulator/210902
+      - /srv/data/vital_amc:/srv/data/vital_amc
+      - /srv/project_code:/srv/project_code
+      - /home/home/projects/pcg_transform/Research/old/pcg_AI/ml/Data/Preprocessed/VG/:/home/projects/pcg_transform/Research/old/pcg_AI/ml/Data/Preprocessed/VG/  
+    ports:
+      - "8891:8891"
+    tty: true
+    environment:
+      - JUPYTER_TOKEN=signalserver
+    command: ["jupyter", "lab", "--port=8891","--no-browser", "--ip=0.0.0.0", "--notebook-dir=/", "--allow-root"]
+  
+  webgui:
+    image: hskim:webgui
+    tty: true
+    volumes:
+      - /home/hskim/Projects/:/Projects 
+      - /srv/data/vital_amc/TEST-01-Emulator/210805:/srv/data/vital_amc/TEST-01-Emulator/210805 
+      - /srv/data/vital_amc/TEST-01-Emulator/210902:/srv/data/vital_amc/TEST-01-Emulator/210902
+      - /srv/data/vital_amc:/srv/data/vital_amc 
+      - /srv/project_code:/srv/project_code
+      - /home/home/projects/pcg_transform/Research/old/pcg_AI/ml/Data/Preprocessed/VG/:/home/projects/pcg_transform/Research/old/pcg_AI/ml/Data/Preprocessed/VG/  
+    ports:
+      - "8501:8501"
+    command: ["/bin/sh", "-c", "/bin/bash"]
+    
+  webgui-gpu:
+    image: hskim:webgui-gpu
+    tty: true
+    volumes:
+      - /home/hskim/Projects/:/Projects 
+      - /srv/data/vital_amc/TEST-01-Emulator/210805:/srv/data/vital_amc/TEST-01-Emulator/210805 
+      - /srv/data/vital_amc/TEST-01-Emulator/210902:/srv/data/vital_amc/TEST-01-Emulator/210902
+      - /srv/data/vital_amc:/srv/data/vital_amc 
+      - /srv/project_code:/srv/project_code
+      - /home/home/projects/pcg_transform/Research/old/pcg_AI/ml/Data/Preprocessed/VG/:/home/projects/pcg_transform/Research/old/pcg_AI/ml/Data/Preprocessed/VG/  
+    ports:
+      - "8891:8891"
+    tty: true
+    environment:
+      - JUPYTER_TOKEN=signalserver
+    command: ["/bin/sh", "-c", "/bin/bash"]
